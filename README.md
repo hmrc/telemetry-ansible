@@ -1,7 +1,14 @@
 
 # telemetry-ansible
-
+[![Brought to you by Telemetry Team](https://img.shields.io/badge/MDTP-Telemetry-40D9C0?style=flat&labelColor=000000&logo=gov.uk)](https://confluence.tools.tax.service.gov.uk/display/TEL/Telemetry)
 A repository with the ansible code used for version checking across the HMRC webops platform.
+
+---
+**NOTE**
+
+This is a one-shot test script used during the Log4j vunerability. Not intended for regular use. Could potentially be moved to a seperate location in the future.
+
+---
 
 ## Requirements
 - `botocore`
