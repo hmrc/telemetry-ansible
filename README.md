@@ -1,7 +1,25 @@
 
 # telemetry-ansible
 
-This is a placeholder README.md for a new repository
+A repository with the ansible code used for version checking across the HMRC webops platform.
+
+## Requirements
+- `botocore`
+- `boto3`
+- `ansible`
+
+## Commands
+
+```
+aws-profile -p <aws profile> ansible-playbook playbook.yml
+
+aws-profile -p webops-integration-engineer-RoleTelemetryEngineer ansible-playbook playbook.yml
+
+aws-profile -p webops-development-engineer-RoleTelemetryEngineer ansible-playbook playbook.yml
+
+aws-profile -p webops-qa-engineer-RoleTelemetryEngineer ansible-playbook playbook.yml
+```
+
 
 ### License
 
