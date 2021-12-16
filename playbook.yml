@@ -1,0 +1,19 @@
+---
+- name: Network Getting Started First Playbook
+  gather_facts: false
+  hosts: all
+  tasks:
+
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Show logstash version
+      ansible.builtin.debug:
+        msg: "Logstash version: {{ ansible_facts.packages['logstash'][0]['version'] }}"
+      when: "'logstash' in ansible_facts.packages"
+
+    - name: Fail if logstash version is not 1:6.8.21-1
+      fail:
+        msg: "Logstash version: {{ ansible_facts.packages['logstash'][0]['version'] }}"
+      when: ansible_facts.packages['logstash'][0]['version'] != "1:6.8.21-1"
