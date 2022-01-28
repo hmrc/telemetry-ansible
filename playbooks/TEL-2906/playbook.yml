@@ -2,20 +2,18 @@
 - name: Determine policykit version
   gather_facts: false
   hosts: all
+  ignore_errors: true
   tasks:
     - name: Gather the package facts
-      ignore_unreachable: yes
       ansible.builtin.package_facts:
         manager: auto
 
     - name: Show policykit-1 version
-      ignore_unreachable: yes
       ansible.builtin.debug:
         msg: "policykit-1 version: {{ ansible_facts.packages['policykit-1'][0]['version'] }}"
       when: "'policykit-1' in ansible_facts.packages"
 
     - name: Fail if policykit-1 version is not 0.105-20ubuntu0.18.04.6
-      ignore_unreachable: yes
       fail:
         msg: "policykit-1 version: {{ ansible_facts.packages['policykit-1'][0]['version'] }}"
       when: ansible_facts.packages['policykit-1'][0]['version'] != "0.105-20ubuntu0.18.04.6"
