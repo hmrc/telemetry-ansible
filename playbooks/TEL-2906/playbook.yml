@@ -1,34 +1,21 @@
 ---
-#- name: Determine policykit version
-#  hosts: raspbernetes_master:raspbernetes_workers
-#  become: true
-#  vars_files:
-#    - vars/netplan.yml
-#    - vars/secure.yml
-#  pre_tasks:
-#    - name: 'apt update/upgrade/install/clean'
-#      raw: apt update && apt upgrade -y && apt install -y git sshpass net-tools libraspberrypi-bin && apt autoremove -y
-#  roles:
-#    - role: bootstrap
-#    - role: mrlesmithjr.netplan
-#    - role: security
-
-
-
 - name: Determine policykit version
   gather_facts: false
   hosts: all
   tasks:
     - name: Gather the package facts
+      ignore_unreachable: yes
       ansible.builtin.package_facts:
         manager: auto
 
-#    - name: Show logstash version
-#      ansible.builtin.debug:
-#        msg: "Logstash version: {{ ansible_facts.packages['policykit-1'][0]['version'] }}"
-#      when: "'logstash' in ansible_facts.packages"
-#
-#    - name: Fail if logstash version is not 1:6.8.21-1
-#      fail:
-#        msg: "Logstash version: {{ ansible_facts.packages['logstash'][0]['version'] }}"
-#      when: ansible_facts.packages['logstash'][0]['version'] != "1:6.8.21-1"
+    - name: Show policykit-1 version
+      ignore_unreachable: yes
+      ansible.builtin.debug:
+        msg: "policykit-1 version: {{ ansible_facts.packages['policykit-1'][0]['version'] }}"
+      when: "'policykit-1' in ansible_facts.packages"
+
+    - name: Fail if policykit-1 version is not 0.105-20ubuntu0.18.04.6
+      ignore_unreachable: yes
+      fail:
+        msg: "policykit-1 version: {{ ansible_facts.packages['policykit-1'][0]['version'] }}"
+      when: ansible_facts.packages['policykit-1'][0]['version'] != "0.105-20ubuntu0.18.04.6"
