@@ -3,3 +3,4 @@ regions:
   - eu-west-2
 filters:
   tag:team: Telemetry
+  instance-state-name: running

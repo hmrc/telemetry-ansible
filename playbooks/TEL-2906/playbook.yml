@@ -1,0 +1,34 @@
+---
+#- name: Determine policykit version
+#  hosts: raspbernetes_master:raspbernetes_workers
+#  become: true
+#  vars_files:
+#    - vars/netplan.yml
+#    - vars/secure.yml
+#  pre_tasks:
+#    - name: 'apt update/upgrade/install/clean'
+#      raw: apt update && apt upgrade -y && apt install -y git sshpass net-tools libraspberrypi-bin && apt autoremove -y
+#  roles:
+#    - role: bootstrap
+#    - role: mrlesmithjr.netplan
+#    - role: security
+
+
+
+- name: Determine policykit version
+  gather_facts: false
+  hosts: all
+  tasks:
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+#    - name: Show logstash version
+#      ansible.builtin.debug:
+#        msg: "Logstash version: {{ ansible_facts.packages['policykit-1'][0]['version'] }}"
+#      when: "'logstash' in ansible_facts.packages"
+#
+#    - name: Fail if logstash version is not 1:6.8.21-1
+#      fail:
+#        msg: "Logstash version: {{ ansible_facts.packages['logstash'][0]['version'] }}"
+#      when: ansible_facts.packages['logstash'][0]['version'] != "1:6.8.21-1"
