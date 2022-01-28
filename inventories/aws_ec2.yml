@@ -1,5 +1,7 @@
 plugin: aws_ec2
+cache: no
 regions:
   - eu-west-2
 filters:
   tag:team: Telemetry
+  instance-state-name: running
