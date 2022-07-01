@@ -1,6 +1,13 @@
 repos:
-  - repo: git://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0  # Use the ref you want to point at
+  - repo: local
+    hooks:
+      - id: validate-tool-versions
+        name: Validate tool versions
+        entry: ./tools/check_tool_versions.sh
+        language: script
+        pass_filenames: false
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
     hooks:
       - id: no-commit-to-branch
       - id: check-case-conflict
@@ -11,12 +18,12 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
   - repo: https://github.com/ansible/ansible-lint.git
-    rev: v5.3.2
+    rev: v6.3.0
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
   - repo: https://github.com/hmrc/security-git-hooks
-    rev: release/1.8.0
+    rev: release/1.9.0
     hooks:
       - id: secrets_filecontent
         name: Checking staged files for sensitive content
