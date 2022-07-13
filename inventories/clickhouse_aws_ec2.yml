@@ -1,0 +1,13 @@
+plugin: aws_ec2
+cache: false
+regions:
+  - eu-west-2
+filters:
+  tag:Name:
+    - clickhouse-server-shard_1
+    - clickhouse-server-shard_2
+  instance-state-name: running
+compose:
+  # use the private IP address to connect to the host
+  # (note: this does not modify inventory_hostname, which is set via I(hostnames))
+  ansible_host: private_ip_address

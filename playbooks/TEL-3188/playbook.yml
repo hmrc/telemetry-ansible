@@ -1,0 +1,25 @@
+---
+- name: Determine clickhouse-server version
+  gather_facts: false
+  hosts: all
+  tasks:
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Show clickhouse-server version
+      ansible.builtin.debug:
+        msg: "clickhouse-server version: {{ ansible_facts.packages['clickhouse-server'][0]['version'] }}"
+      when: "'clickhouse-server' in ansible_facts.packages"
+
+    - name: Fail if clickhouse-server version is not 22.6.3.35
+      fail:
+        msg: "clickhouse-server version: {{ ansible_facts.packages['clickhouse-server'][0]['version'] }}"
+      when: ansible_facts.packages['clickhouse-server'][0]['version'] != "22.6.3.35"
+
+    - name: Execute goss
+      ansible.builtin.shell: goss --gossfile /etc/goss/goss.yaml validate --format documentation
+      register: goss
+
+    - debug: msg="{{ goss.stdout }}"
+

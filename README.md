@@ -22,9 +22,9 @@ properties/state without having to SSH onto each box individually.
 ## Commands
 
 ```shell
-aws-profile -p ${AWS_PROFILE} make run ticket=${TICKET}
+aws-profile -p ${AWS_PROFILE} make run ticket=${TICKET} playbook=${PLAYBOOK}
 
-aws-profile -p webops-integration-engineer-RoleTelemetryEngineer make run ticket=TEL-2906
+aws-profile -p telemetry-mdtp-integration-RoleTelemetryEngineer make run ticket=TEL-2906 playbook=aws_ec2.yml
 ```
 
 ## License
