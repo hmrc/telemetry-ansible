@@ -41,9 +41,9 @@ setup: check_poetry ## Setup virtualenv & dependencies using Poetry
 	python --version
 .PHONY: setup
 
-run: ## Run ansible playbook for the supplied Jira Ticket e.g make run ticket=TEL-2906 playbook=aws_ec2.yml
-ifneq ($(and $(playbook),$(ticket)),)
-	ansible-playbook ./playbooks/$(ticket)/playbook.yml --inventory ./inventories/$(playbook)
+run: ## Run ansible playbook for the supplied Jira Ticket and inventory e.g make run ticket=TEL-2906 inventory=aws_ec2.yml
+ifneq ($(and $(inventory),$(ticket)),)
+	ansible-playbook ./playbooks/$(ticket)/playbook.yml --inventory ./inventories/$(inventory)
 else
-	@echo 'Ticket and/or playbook is not provided! usage: make $@ ticket=TEL-xxxx playbook=aws_ec2.yml'
+	@echo 'Ticket and/or inventory is not provided! usage: make $@ ticket=TEL-xxxx inventory=aws_ec2.yml'
 endif
