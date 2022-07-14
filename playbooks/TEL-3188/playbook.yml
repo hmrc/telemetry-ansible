@@ -46,7 +46,8 @@
         - "{{ clickhouse_data_root }}/graphite_tree"
         - "{{ clickhouse_data_root }}/graphite_tree_distributed"
 
-    - debug: msg="link exists"
+    - name: Check for symlinks (debug output)
+      debug: msg="link exists"
       when: symlink.stat.islnk is defined and symlink.stat.islnk
 
     - name: Gather the package facts
