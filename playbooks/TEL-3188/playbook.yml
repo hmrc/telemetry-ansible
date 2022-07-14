@@ -1,0 +1,62 @@
+---
+- name: Determine clickhouse-server details
+  gather_facts: false
+  hosts: all
+  vars:
+    clickhouse_data_root: "/var/lib/clickhouse/data/graphite"
+    clickhouse_store: "/var/lib/clickhouse/store"
+    clickhouse_version: "22.6.3.35"
+  tasks:
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Show clickhouse-server version
+      ansible.builtin.debug:
+        msg: "clickhouse-server version: {{ ansible_facts.packages['clickhouse-server'][0]['version'] }}"
+      when: "'clickhouse-server' in ansible_facts.packages"
+
+    - name: "Fail if clickhouse-server version is not {{ clickhouse_version }}"
+      fail:
+        msg: "clickhouse-server version: {{ ansible_facts.packages['clickhouse-server'][0]['version'] }}"
+      when: ansible_facts.packages['clickhouse-server'][0]['version'] != clickhouse_version
+
+    - name: Execute goss
+      ansible.builtin.shell: goss --gossfile /etc/goss/goss.yaml validate --format documentation
+      register: goss
+
+    - debug: msg="{{ goss.stdout }}"
+
+    - name: Check if the Clickhouse store directory exists
+      ansible.builtin.stat:
+        path: "{{ clickhouse_store }}"
+      register: clickhouse_store_dir
+
+    - name: Clickhouse store directory found
+      fail:
+        msg: "Directory {{ clickhouse_store }} not present"
+      when: clickhouse_store_dir.stat.isdir is undefined
+
+    - name: Check Clickhouse database health
+      ansible.builtin.shell: clickhouse-client --query='select shard_num, replica_num, host_address, slowdowns_count, estimated_recovery_time from system.clusters format Vertical'
+      args:
+        executable: /bin/bash
+      register: result
+      failed_when:
+        - result.rc == 1
+
+    - debug: msg="{{ result.stdout }}"
+
+    - name: Check for symlinks
+      stat:
+        path: "{{ item }}"
+      register: symlink
+      become: yes
+      with_items:
+        - "{{ clickhouse_data_root }}/graphite"
+        - "{{ clickhouse_data_root }}/graphite_distributed"
+        - "{{ clickhouse_data_root }}/graphite_tree"
+        - "{{ clickhouse_data_root }}/graphite_tree_distributed"
+
+    - debug: msg="link exists"
+      when: symlink.stat.islnk is defined and symlink.stat.islnk
