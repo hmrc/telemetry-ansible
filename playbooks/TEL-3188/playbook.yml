@@ -23,3 +23,13 @@
 
     - debug: msg="{{ goss.stdout }}"
 
+    - name: Check for old format data
+      ansible.builtin.shell: "[[ ! -d /var/lib/clickhouse/store ]] && echo 'Instance has old format data'"
+      args:
+        executable: /bin/bash
+      register: old_format
+
+    - name: Fail if the new data format is not found
+      fail:
+        msg: "Instance has old format data"
+      when: old_format.stdout == "Instance has old format data"
