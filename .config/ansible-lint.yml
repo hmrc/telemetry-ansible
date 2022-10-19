@@ -1,2 +1,5 @@
 warn_list:  # or 'skip_list' to silence them completely
   - fqcn-builtins  # Use FQCN for builtin actions.
+  - no-changed-when  # Commands should not change things if nothing needs doing.
+  - yaml[line-length]  # Violations reported by yamllint.
+  - yaml[new-line-at-end-of-file]  # Violations reported by yamllint.

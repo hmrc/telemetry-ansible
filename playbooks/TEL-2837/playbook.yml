@@ -14,6 +14,6 @@
       when: "'logstash' in ansible_facts.packages"
 
     - name: Fail if logstash version is not 1:6.8.21-1
-      fail:
+      ansible.builtin.fail:
         msg: "Logstash version: {{ ansible_facts.packages['logstash'][0]['version'] }}"
       when: ansible_facts.packages['logstash'][0]['version'] != "1:6.8.21-1"

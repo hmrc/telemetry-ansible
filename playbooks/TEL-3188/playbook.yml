@@ -9,10 +9,13 @@
   tasks:
     - name: Execute goss
       ansible.builtin.shell: goss --gossfile /etc/goss/goss.yaml validate --format documentation
+      args:
+        executable: /bin/bash
       register: goss
 
     - name: Execute goss (debug output)
-      debug: msg="{{ goss.stdout }}"
+      ansible.builtin.debug:
+        msg: "{{ goss.stdout }}"
 
     - name: Check if the Clickhouse store directory exists
       ansible.builtin.stat:
@@ -20,7 +23,7 @@
       register: clickhouse_store_dir
 
     - name: Clickhouse store directory found
-      fail:
+      ansible.builtin.fail:
         msg: "Directory {{ clickhouse_store }} not present"
       when: clickhouse_store_dir.stat.isdir is undefined
 
@@ -33,13 +36,14 @@
         - health.rc == 1
 
     - name: Check Clickhouse database health (debug output)
-      debug: msg="{{ health.stdout }}"
+      ansible.builtin.debug:
+        msg: "{{ health.stdout }}"
 
     - name: Check for symlinks
-      stat:
+      ansible.builtin.stat:
         path: "{{ item }}"
       register: symlink
-      become: yes
+      become: true
       with_items:
         - "{{ clickhouse_data_root }}/graphite"
         - "{{ clickhouse_data_root }}/graphite_distributed"
@@ -47,7 +51,8 @@
         - "{{ clickhouse_data_root }}/graphite_tree_distributed"
 
     - name: Check for symlinks (debug output)
-      debug: msg="link exists"
+      ansible.builtin.debug:
+        msg: "link exists"
       when: symlink.stat.islnk is defined and symlink.stat.islnk
 
     - name: Gather the package facts
@@ -60,6 +65,6 @@
       when: "'clickhouse-server' in ansible_facts.packages"
 
     - name: "Fail if clickhouse-server version is not {{ clickhouse_version }}"
-      fail:
+      ansible.builtin.fail:
         msg: "clickhouse-server version: {{ ansible_facts.packages['clickhouse-server'][0]['version'] }}"
       when: ansible_facts.packages['clickhouse-server'][0]['version'] != clickhouse_version
