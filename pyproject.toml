@@ -8,7 +8,7 @@ authors = ["Team Telemetry <telemetry@digital.hmrc.gov.uk>"]
 [tool.poetry.dependencies]
 boto3 = "*"
 colorama = "^0.4.4"
-python = "^3.9"
+python = "^3.10"
 pyyaml = "*"
 
 [tool.poetry.dev-dependencies]

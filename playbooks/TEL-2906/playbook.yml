@@ -14,6 +14,6 @@
       when: "'policykit-1' in ansible_facts.packages"
 
     - name: Fail if policykit-1 version is not 0.105-20ubuntu0.18.04.6
-      fail:
+      ansible.builtin.fail:
         msg: "policykit-1 version: {{ ansible_facts.packages['policykit-1'][0]['version'] }}"
       when: ansible_facts.packages['policykit-1'][0]['version'] != "0.105-20ubuntu0.18.04.6"
