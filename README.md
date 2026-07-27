@@ -15,16 +15,16 @@ properties/state without having to SSH onto each box individually.
 
 ## Requirements
 - `ansible`
-- `aws-profile`
 - `boto3`
 - `botocore`
 
 ## Commands
 
 ```shell
-aws-profile -p ${AWS_PROFILE} make run ticket=${TICKET} inventory=${INVENTORY}
-
-aws-profile -p telemetry-mdtp-integration-RoleTelemetryEngineer make run ticket=TEL-2906 inventory=aws_ec2.yml
+# Ensure you have AWS Credentials set appropriately for the account
+# make run ticket=${TICKET} inventory=${INVENTORY}
+# e.g.
+make run ticket=TEL-2906 inventory=aws_ec2.yml
 ```
 
 ## License
