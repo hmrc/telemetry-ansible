@@ -34,7 +34,7 @@ mise run setup
 # Ensure you have AWS Credentials set appropriately for the account
 # make run ticket=${TICKET} inventory=${INVENTORY}
 # e.g.
-mise run ansible ticket=TEL-2906 inventory=aws_ec2.yml
+mise run ansible --ticket TEL-2837 --inventory aws_ec2.yml --check
 ```
 
 ## License
