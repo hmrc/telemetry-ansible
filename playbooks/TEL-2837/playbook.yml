@@ -1,19 +1,21 @@
 ---
 - name: Network Getting Started First Playbook
-  gather_facts: false
+  gather_facts: true
   hosts: all
   tasks:
+    - name: Check installed systemd version
+      ansible.builtin.command: dpkg-query -W -f='${Version}' systemd
+      register: systemd_version
+      changed_when: false
+      failed_when: false
+      check_mode: false
 
-    - name: Gather the package facts
-      ansible.builtin.package_facts:
-        manager: auto
-
-    - name: Show logstash version
+    - name: Show systemd version
       ansible.builtin.debug:
-        msg: "Logstash version: {{ ansible_facts.packages['logstash'][0]['version'] }}"
-      when: "'logstash' in ansible_facts.packages"
+        msg: "Systemd version: {{ systemd_version.stdout }}"
+      when: systemd_version.rc == 0
 
-    - name: Fail if logstash version is not 1:6.8.21-1
+    - name: Fail if systemd version is not 249.11-0ubuntu3.22
       ansible.builtin.fail:
-        msg: "Logstash version: {{ ansible_facts.packages['logstash'][0]['version'] }}"
-      when: ansible_facts.packages['logstash'][0]['version'] != "1:6.8.21-1"
+        msg: "Systemd version: {{ systemd_version.stdout }}"
+      when: systemd_version.rc == 0 and systemd_version.stdout != "249.11-0ubuntu3.22"

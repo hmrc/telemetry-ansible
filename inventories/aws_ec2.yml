@@ -5,3 +5,8 @@ regions:
 filters:
   tag:team: Telemetry
   instance-state-name: running
+compose:
+  ansible_aws_ssm_bucket_name: "'telemetry-' ~ lookup('env', 'AWS_ENV') ~ '-inventory'"
+  ansible_aws_ssm_region: "'eu-west-2'"
+  ansible_connection: "'amazon.aws.aws_ssm'"
+  ansible_host: instance_id
