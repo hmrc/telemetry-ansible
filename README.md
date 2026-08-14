@@ -5,26 +5,36 @@
 A repository containing Ansible playbooks for specific tickets which allows for automated checking of running instance
 properties/state without having to SSH onto each box individually.
 
-<!-- toc -->
+## Table of Contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Requirements](#requirements)
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
 - [Commands](#commands)
 - [License](#license)
 
-<!-- tocstop -->
+<!-- END doctoc -->
 
-## Requirements
-- `ansible`
-- `boto3`
-- `botocore`
+## Prerequisites
 
+For building locally, you will need:
+* an active `AWS_PROFILE` for HMRC AWS account
+* [Docker](https://docs.docker.com/get-started/) installed and running
+* [Python v3](https://www.python.org/downloads/) installed via [mise](https://mise.jdx.dev/).
+
+## Setup
+
+```shell
+mise run setup
+```
 ## Commands
 
 ```shell
 # Ensure you have AWS Credentials set appropriately for the account
 # make run ticket=${TICKET} inventory=${INVENTORY}
 # e.g.
-make run ticket=TEL-2906 inventory=aws_ec2.yml
+mise run ansible ticket=TEL-2906 inventory=aws_ec2.yml
 ```
 
 ## License

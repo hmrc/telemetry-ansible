@@ -8,6 +8,6 @@ filters:
     - clickhouse-server-shard_2
   instance-state-name: running
 compose:
-  # use the private IP address to connect to the host
-  # (note: this does not modify inventory_hostname, which is set via I(hostnames))
-  ansible_host: private_ip_address
+  ansible_host: instance_id
+  ansible_connection: "'amazon.aws.aws_ssm'"
+  ansible_aws_ssm_region: "'eu-west-2'"

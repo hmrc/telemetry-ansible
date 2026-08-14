@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#MISE description="Run ansible playbook for the supplied Jira Ticket and inventory"
+
+#USAGE flag "-c --check" help="Simulates the playbook run and print out what would have been executed on the target hosts"
+#USAGE flag "--inventory <inventory>" help="The inventory file to target instances"
+#USAGE flag "--ticket <ticket>" help="The Jira ticket for this playbook"
+
+playbook="./playbooks/${usage_ticket}/playbook.yml"
+inventory="./inventories/${usage_inventory}"
+
+if [ ! -f "$playbook" ]; then
+  echo "Error: playbook not found: $playbook" >&2
+  exit 1
+fi
+
+if [ ! -e "$inventory" ]; then
+  echo "Error: inventory not found: $inventory" >&2
+  exit 1
+fi
+
+if [ "${usage_check:-false}" = "true" ]; then
+  uv run ansible-playbook "$playbook" --inventory "$inventory" --check
+else
+  uv run ansible-playbook "$playbook" --inventory "$inventory"
+fi
