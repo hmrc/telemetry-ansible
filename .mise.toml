@@ -1,4 +1,5 @@
 [env]
+OS_ACTIVITY_MODE="disable" # Bypass [ERROR]: A worker was found in a dead state on MacOS
 _.file = { path = ".env", redact = true }
 _.python.venv = { path = ".venv", create = true }
 
